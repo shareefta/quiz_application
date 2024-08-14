@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Samastha Kerala Jam'iyyathul Ulama</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        body {
+            background-color: #e0f7fa;
+        }
+        .section-content {
+            padding: 20px;
+        }
+        .card {
+            border-radius: 8px;
+        }
+        .card a {
+            text-decoration: none;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body style="background-color: aqua;">
+    <section class="section-content padding-y bg">
+        <div class="container">
+            <div class="row">
+                <div class="logout-btn">
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Logout</button>
+                    </form>
+                </div>
+                <main class="col-md-12">
+                    <div class="row justify-content-center">
+                        <div class="m-3 table-heading text-center font-weight-bold border-bottom"
+                             style="font-size: 25px; line-height: 1.5;">77th Independance Day Celebrations!!! <br> Quiz Competition
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-md-3 card text-white bg-primary m-2" style="max-width: 15rem;">
+                            <div class="card-body text-center">
+                                <a href="" class="text-white font-weight-bold"
+                                   style="font-size: 20px; line-height: 1.5;">Admin Users</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 card text-white bg-primary m-2" style="max-width: 15rem;">
+                            <div class="card-body text-center">
+                                <a href="{% url 'participant_list' %}" class="text-white font-weight-bold"
+                                   style="font-size: 20px; line-height: 1.5;">Participants</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 card text-white bg-primary m-2" style="max-width: 15rem;">
+                            <div class="card-body text-center">
+                                <a href="{% url 'register_parent' %}" class="text-white font-weight-bold"
+                                   style="font-size: 20px; line-height: 1.5;">Register</a>
+                            </div>
+                        </div>
+                        <div class="col-md-3 card text-white bg-primary m-2" style="max-width: 15rem;">
+                            <div class="card-body text-center">
+                                <a href="{% url 'upload_participants' %}" class="text-white font-weight-bold"
+                                   style="font-size: 20px; line-height: 1.5;">Upload File</a>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJTYtXt3GEFf2J6sICXiwgHf1Iw5B2WRZ92fA3XyZ0hVGSA8N" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>

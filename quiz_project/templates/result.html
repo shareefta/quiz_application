@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Result{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm border-light">
+                    <div class="card-body text-center">
+                        <h4 class="mb-4">Your Result:</h4>
+                        <p class="h6 mb-3">Total Questions: <span class="font-weight-bold">{{ total_questions }}</span></p>
+                        <p class="h6 mb-3">Submitted Questions: <span class="font-weight-bold">{{ submitted_questions }}</span></p>
+                        <p class="h6 mb-4">Marks Obtained: <span class="font-weight-bold">{{ score }} / 30</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

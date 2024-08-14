@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Login Page{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center">
+    <div class="login-container">
+        <h2 class="login-header text-center">Admin Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

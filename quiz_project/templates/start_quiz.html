@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Quiz Competition{% endblock %}
+
+{% block content %}
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <div class="col-lg-12 mx-auto">
+                <div class="card shadow-sm border-light">
+                    <div class="card-body">
+                        <!-- Timer Box -->
+                        <div id="timer-box" class="col-md-6 sticky-timer text-center mb-1 p-1 rounded" style="background-color: #ff4c4c; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                            <span class="h5 text-white">Remaining Time: </span>
+                            <span id="timer" class="h3 text-white">0:00</span>
+                        </div>
+                        <div>
+                            <form id="quizForm" method="post" action="{% url 'start_quiz' %}">
+                                {% csrf_token %}
+                                
+                                {% for form in forms %}
+                                    <div class="mb-4">
+                                        <p class="h5 mb-3">Question {{ forloop.counter }}</p>
+                                        <div class="form-group">
+                                            {{ form.as_p }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="text-center mt-4">
+                                    <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('Are you sure you want to submit the quiz?');">Submit Quiz</button>
+                                </div>
+                            </form>
+                        </div>             
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var display = document.querySelector('#timer');
+            var timeLimit = 600;  // Set the timer duration (600 seconds = 10 minutes)
+            var parentId = "{{ parent_id }}";
+            var startTime = parseInt(getCookie('quiz_start_time_' + parentId)) || Math.floor(Date.now() / 1000);
+            var endTime = parseInt(getCookie('quiz_end_time_' + parentId)) || startTime + timeLimit;
+            var now = Math.floor(Date.now() / 1000);
+        
+            if (now > endTime) {
+                alert("Time is up! Your quiz will now be submitted automatically.");
+                document.getElementById("quizForm").submit();
+            } else {
+                if (!getCookie('quiz_start_time_' + parentId)) {
+                    setCookie('quiz_start_time_' + parentId, startTime, 1);
+                    setCookie('quiz_end_time_' + parentId, endTime, 1);
+                }
+                startTimer(endTime, display);
+            }
+        };        
+    
+        // Timer function
+        function startTimer(endTime, display) {
+            var countdown = setInterval(function () {
+                var now = Math.floor(Date.now() / 1000);
+                var remainingTime = endTime - now;
+    
+                if (remainingTime <= 0) {
+                    clearInterval(countdown);
+                    alert("Time is up! Your quiz will now be submitted automatically.");
+                    document.getElementById("quizForm").submit();
+                    return;
+                }
+    
+                var minutes = parseInt(remainingTime / 60, 10);
+                var seconds = parseInt(remainingTime % 60, 10);
+    
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+    
+                display.textContent = minutes + ":" + seconds;
+            }, 1000);
+        }
+    
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+    
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+    </script>    
+    
+{% endblock %}

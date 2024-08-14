@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Participant's List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style>
+        .sticky-header th {
+            position: -webkit-sticky; /* for Safari */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #ddd;
+        }
+
+        .sticky-header {
+            overflow-y: auto;
+            max-height: 80vh; /* Adjust the height as needed */
+        }
+
+        .sticky-header th, .sticky-header td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body style="background-color: aqua;">
+    <div class="container">
+        <div class="row justify-content-left mt-4">
+            <div class="m-2">
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-primary">Back</a>
+            </div>
+            <div class="m-2">
+                <a class="btn btn-primary" href="{% url 'register_parent' %}">Add Participant</a>
+            </div>
+            <div class="m-2">
+                <form method="get" class="form-inline">
+                    <label for="class_name" class="mr-2">Filter by Class:</label>
+                    <select name="class_name" id="circle_name" class="form-control mr-2">
+                        <option value="">All Classes</option>
+                        {% for class in classes %}
+                            <option value="{{ class }}" {% if class == class_name %}selected{% endif %}>{{ class }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+            </div>
+        </div>
+        <main class="col-md-12">
+            <div class="row justify-content-center">
+                <div class="m-3 table-heading text-center font-weight-bold border-bottom" style="font-size: 25px; line-height: 1.5;">
+                    Participant's List - Quiz Competition
+                </div>
+            </div>
+            <div class="table-responsive sticky-header">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Sl. No.</th>
+                            <th>Ad. No.</th>
+                            <th>Student's Name</th>
+                            <th>Class</th>
+                            <th>Mobile Number</th>
+                            <th>Score</th>
+                            <th colspan="2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in page_obj %}
+                            <tr>
+                                <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+                                <td>{{ participant.admission_number }}</td>
+                                <td>{{ participant.student_name }}</td>
+                                <td>{{ participant.class_name }}</td>
+                                <td>{{ participant.mobile_number }}</td>
+                                <td>{{ participant.score }}</td>
+                                <td><a class="btn btn-warning" href="{% url 'participant_update' participant.pk %}">Edit</a></td>
+                                <td><a class="btn btn-danger" href="{% url 'participant_delete' participant.pk %}">Delete</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1{% if class_name %}&class_name={{ class_name }}{% endif %}">&laquo; First</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if class_name %}&class_name={{ class_name }}{% endif %}">Previous</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">&laquo; First</span></li>
+                            <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                        {% endif %}
+
+                        {% for i in page_obj.paginator.page_range %}
+                            {% if page_obj.number == i %}
+                                <li class="page-item active"><span class="page-link">{{ i }}</span></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}{% if class_name %}&class_name={{ class_name }}{% endif %}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if class_name %}&class_name={{ class_name }}{% endif %}">Next</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if class_name %}&class_name={{ class_name }}{% endif %}">Last &raquo;</a></li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">Next</span></li>
+                            <li class="page-item disabled"><span class="page-link">Last &raquo;</span></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
