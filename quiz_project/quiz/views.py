@@ -243,13 +243,11 @@ def start_quiz(request):
 
     if now < scheduled_start_time:
         remaining_time = (scheduled_start_time - now).total_seconds()
-    else:
-        remaining_time = 0
 
-    return render(request, 'admin/countdown.html', {
-        'remaining_time': remaining_time,
-        'scheduled_start_time': scheduled_start_time
-    })       
+        return render(request, 'admin/countdown.html', {
+            'remaining_time': remaining_time,
+            'scheduled_start_time': scheduled_start_time
+        })       
 
     if attempt:
         # Check if the quiz is completed
